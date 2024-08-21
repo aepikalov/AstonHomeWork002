@@ -48,6 +48,6 @@ public class Trader {
 
     @Override
     public String toString() {
-        return String.format("Entity.Trader:%s in %s", name, city);
+        return String.format("Trader:%s in %s", name, city);
     }
 }
