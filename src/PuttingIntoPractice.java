@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PuttingIntoPractice {
 
@@ -40,18 +41,21 @@ public class PuttingIntoPractice {
 
         // 4. Вернуть строку со всеми именами трейдеров, отсортированными в алфавитном порядке.
         System.out.println("\n4. Строка со всеми именами трейдеров, отсортированными в алфавитном порядке:");
-        transactions.stream().map(t -> t.getTrader().getName()).distinct()
-                .sorted().forEach(t -> System.out.print(t + " "));
+        String traders = transactions.stream().map(t -> t.getTrader().getName()).distinct()
+                .sorted().collect(Collectors.joining(", "));
+        System.out.println(traders);
 
         // 5. Выяснить, существует ли хоть один трейдер из Милана.
-        System.out.println("\n\n5. Поиск хоть одного трейдера из Милана:");
-        transactions.stream().map(Transaction::getTrader).distinct()
-                .filter(t -> Objects.equals(t.getCity(), "Milan")).forEach(System.out::println);
+        System.out.println("\n5. Поиск хоть одного трейдера из Милана:");
+        boolean milan = transactions.stream().map(Transaction::getTrader).distinct()
+                .anyMatch(t -> Objects.equals(t.getCity(), "Milan"));
+        System.out.println("Существует ли хоть один трейдер из Милана? Ответ: " + milan);
 
         // 6. Вывести суммы всех транзакций трейдеров из Кембриджа.
         System.out.println("\n6. Суммы всех транзакций трейдеров из Кембриджа:");
-        transactions.stream().filter(t -> Objects.equals(t.getTrader().getCity(), "Cambridge"))
-                .map(Transaction::getValue).forEach(System.out::println);
+        int sum = transactions.stream().filter(t -> Objects.equals(t.getTrader().getCity(), "Cambridge"))
+                .mapToInt(Transaction::getValue).sum();
+        System.out.println(sum);
 
         //7. Какова максимальная сумма среди всех транзакций?
         System.out.println("\n7. Максимальная сумма среди всех транзакций:");
